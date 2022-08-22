@@ -47,14 +47,29 @@
             
             while ($row=mysqli_fetch_assoc($result))
             {
-
-                    echo"<tr>
+                    echo"<form method=\"POST\">
+                    <tr>
                     <td>{$row['NOM']}</td>
                     <td>{$row['PRENOM']}</td>
                     <td>{$row['EMAIL']}</td>
-                    <td><button class=\"favorite styled\" type=\"button\">Présent</button><button class=\"favorite styled\" type=\"button\">Absent</button></td>
-                    </tr>\n";
+                    <td><input class=\"favorite styled\" type=\"submit\" name=\"boutonP{$row['ID_UTILISATEUR']}\" value=\"Présent\">
+                    <input class=\"favorite styled\" type=\"submit\" name=\"boutonA{$row['ID_UTILISATEUR']}\" value=\"Absent\"></td>
+                    </tr>\n
+                    </form>";
+                    if ($_POST) { 
+                     if (isset($_POST['boutonA'.$row['ID_UTILISATEUR']])) 
+                    {       
+                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 0 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                        echo "{$row['ID_UTILISATEUR']}";
+                    }
+                    if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
+                    {       
+                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                        echo "{$row['ID_UTILISATEUR']}";
+                    }
+                }
             }
+            
                     
         ?>
         </table>

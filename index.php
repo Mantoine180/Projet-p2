@@ -9,7 +9,7 @@
     <script src="https://kit.fontawesome.com/59b9fc1090.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    <title>STS snir</title>
+    <title>Projet P2</title>
 </head>
 <body>
  <header>
@@ -47,14 +47,13 @@
             
             while ($row=mysqli_fetch_assoc($result))
             {
-                ?>
-                    <tr>
-                    <td><?php{$row['NOM']} ?></td>
-                    <td><?php{$row['PRENOM']} ?></td>
-                    <td><?php{$row['EMAIL']} ?></td>
-                    <td><button class="favorite styled" type="button">Présent</button><button class="favorite styled" type="button">Absent</button></td>
-                    </tr>
-            <?php
+
+                    echo"<tr>
+                    <td>{$row['NOM']}</td>
+                    <td>{$row['PRENOM']}</td>
+                    <td>{$row['EMAIL']}</td>
+                    <td><button class=\"favorite styled\" type=\"button\">Présent</button><button class=\"favorite styled\" type=\"button\">Absent</button></td>
+                    </tr>\n";
             }
                     
         ?>

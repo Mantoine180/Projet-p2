@@ -242,66 +242,6 @@ h2
     margin-block-start:4px;
     margin-block-end: 4px;
 }
-#Pannier
-{
-    display: flex;
-    justify-content: space-between;
-}
-.Produits
-{
-    width: 50%;
-}
-.Produits.produit_1
-.ImageProduit img
-{
-    
-}
-.NomProduit 
-{
-    margin : auto;
-}
-.Produits.produit_2
-.ImageProduit img
-{
-    
-}
-.NomProduit 
-{
-    margin : auto;
-}
-.Produits.produit_3
-.ImageProduit img
-{
-    
-}
-.NomProduit 
-{
-    margin : auto;
-}
-#Pannier
-.ValiderAchat
-{
-    width: 50%;
-    display: flex;
-    justify-content: center;
-}
-.ValiderAchat
-.Prix
-{
-    margin: auto;
-}
-.ValiderAchat
-.BoutonAcheter
-{
-    margin: auto;
-    border:none;
-    padding:6px 0 6px 0;
-    border-radius:8px;
-    background:rgb(255, 166, 0);
-    font:bold 13px Arial;
-    color:#fff;
-}
-
 
 aside .horaires, aside .formation
 {
@@ -402,6 +342,23 @@ padding-right: 50px;
     text-align:center;
     color: white;
     margin-bottom: 30px;
+}
+.boutonenvoyer {
+    margin: auto;
+    border:none;
+    padding:7px 0 7px 0;
+    border-radius:9px;
+    background:rgb(255, 166, 0);
+    font:bold 13px Arial;
+    color:#fff;
+}
+input.boutonenvoyer {
+    margin: auto;
+    border:none;
+    padding:7px 0 7px 0;
+    border-radius:9px;
+    background-color:rgb(255, 166, 0);
+    font:bold 13px Arial;
 }
 
 footer

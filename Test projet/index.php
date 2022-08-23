@@ -36,48 +36,37 @@
  <section class="banniere">
     <div>Etudiant</div>
         <table border='1'>
-        <tr><td>Nom</td><td>Prenom</td><td>Email</td></tr>
+        <tr><td>Horaire</td><td>Cours</td><td>Validation</td></tr>
         <?php
                 
             //Connexion bdd
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $db = new mysqli("localhost","root","","web p2") or die("Erreur");
-            $sql="SELECT utilisateur.ID_UTILISATEUR,NOM,PRENOM,EMAIL,MotDePasse,utilisateur.ID_ROLE 
-            FROM utilisateur,role,calandrier,classe,groupe,eleve
-            WHERE utilisateur.ID_UTILISATEUR=eleve.ID_UTILISATEUR 
-            AND eleve.ID_GROUPE=groupe.ID_GROUPE 
-            AND eleve.ID_CLASSE=classe.ID_CLASSE 
-            AND groupe.ID_GROUPE=calandrier.ID_GROUPE
-            AND classe.ID_CLASSE=calandrier.ID_CLASSE
-            GROUP BY ID_Utilisateur";
-           
+            $sql="SELECT calandrier FROM calandrier,classe,eleve WHERE calandrier.ID_CLASSE=classe.ID_CLASSE AND classe.ID_CLASSE=eleve.ID_CLASSE ";
             $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
             
+            date_default_timezone_set('Europe/Paris');
+            $date = date('d-m-y h:i:s');
+            echo $date;
+
             while ($row=mysqli_fetch_assoc($result))
             {
-                    echo"<form method=\"POST\">
-                    <tr>
-                    <td>{$row['NOM']}</td>
-                    <td>{$row['PRENOM']}</td>
-                    <td>{$row['EMAIL']}</td>
-                    <td><input class=\"favorite styled\" type=\"submit\" name=\"boutonP{$row['ID_UTILISATEUR']}\" value=\"Présent\">
-                    <input class=\"favorite styled\" type=\"submit\" name=\"boutonA{$row['ID_UTILISATEUR']}\" value=\"Absent\"></td>
-                    </tr>\n
-                    </form>";
-                    if ($_POST) { 
-                     if (isset($_POST['boutonA'.$row['ID_UTILISATEUR']])) 
-                    {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 0 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
-                    }
-                    if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
-                    {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
-                    }
+
+                if(($row['HEUR']<$date) && ($row['HEUR_FIN']>$date))
+                {
+                    echo"<tr>
+                    <td>Heure de début {$row['HEUR']}<br>Heure de fin {$row['HEUR_FIN']}</td>
+
+                    <td><button class=\"favorite styled\" type=\"button\">Présent</button></td>
+                    </tr>\n";
                 }
+
+                else
+                {
+                    echo "Vous n'avez pas de cours durant cette pèriode"
+                }
+                  
             }
-            
                     
         ?>
         </table>

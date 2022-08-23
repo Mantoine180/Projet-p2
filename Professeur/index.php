@@ -48,9 +48,7 @@
             AND eleve.ID_GROUPE=groupe.ID_GROUPE 
             AND eleve.ID_CLASSE=classe.ID_CLASSE 
             AND groupe.ID_GROUPE=calandrier.ID_GROUPE
-            AND classe.ID_CLASSE=calandrier.ID_CLASSE
-            GROUP BY ID_Utilisateur";
-           
+            AND classe.ID_CLASSE=calandrier.ID_CLASSE";
             $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
             
             while ($row=mysqli_fetch_assoc($result))

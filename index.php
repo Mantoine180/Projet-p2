@@ -73,8 +73,8 @@
                     
         ?>
         </table>
+    <a href="GeneratePDF.php"> un pdf </a>
  </section>
-
 </div>
 
 <script src="app.js"></script>

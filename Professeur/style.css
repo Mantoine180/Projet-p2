@@ -348,15 +348,19 @@ padding-right: 50px;
     border:none;
     padding:7px 0 7px 0;
     border-radius:9px;
-    background-color    :rgb(255, 166, 0);
+    background:rgb(255, 166, 0);
     font:bold 13px Arial;
-    color:rgb(255, 166, 0);
+    color:#fff;
 }
-.envoi
-{
-    background-color:rgb(255, 166, 0) ;
-    border: none     ;
+input.boutonenvoyer {
+    margin: auto;
+    border:none;
+    padding:7px 0 7px 0;
+    border-radius:9px;
+    background-color:rgb(255, 166, 0);
+    font:bold 13px Arial;
 }
+
 footer
 {
     margin-top: 15px;

@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -39,19 +38,21 @@
         <table border='1'>
         <tr><td>Nom</td><td>Prenom</td><td>Email</td></tr>
         <?php
+                
             //Connexion bdd
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
-            $id_utilisateur=$_SESSION['ID_UTILISATEUR'];
-
-            $sql="SELECT NOM,PRENOM,email
-            FROM calandrier
-            INNER JOIN eleve ON calandrier.ID_GROUPE = eleve.ID_GROUPE
-            INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR
-            AND calandrier.ID_PROFESSEUR=$id_utilisateur
-            AND NOW()>HEUR_DEBUT
-            AND NOW()<HEUR_FIN";
+            $db = new mysqli("localhost","root","","web p2") or die("Erreur");
+            $sql="SELECT utilisateur.ID_UTILISATEUR,NOM,PRENOM,EMAIL,MotDePasse,utilisateur.ID_ROLE 
+            FROM utilisateur,role,calandrier,classe,groupe,eleve
+            WHERE utilisateur.ID_UTILISATEUR=eleve.ID_UTILISATEUR 
+            AND eleve.ID_GROUPE=groupe.ID_GROUPE 
+            AND eleve.ID_CLASSE=classe.ID_CLASSE 
+            AND groupe.ID_GROUPE=calandrier.ID_GROUPE
+            AND classe.ID_CLASSE=calandrier.ID_CLASSE
+            
+            GROUP BY ID_Utilisateur";
            
-            $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
+            $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
             
             while ($row=mysqli_fetch_assoc($result))
             {

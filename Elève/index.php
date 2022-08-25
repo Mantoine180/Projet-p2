@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -42,24 +43,27 @@
             //Connexion bdd
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $db = new mysqli("localhost","root","","web p2") or die("Erreur");
-            $sql="SELECT * FROM calandrier";
-            $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
-            
-            date_default_timezone_set('Europe/Paris');
-            $date = date('d-m-y h:i:s');
-            echo $date;
+            $id_eleve=$_SESSION['ID_UTILISATEUR'];
+            $sql="SELECT NOM,PRENOM,EMAIL FROM utilisateur
+            INNER JOIN eleve ON utilisateur.ID_UTILISATEUR =eleve.ID_UTILISATEUR
+            INNER JOIN calandrier ON eleve.ID_GROUPE= calandrier.ID_GROUPE
+            AND utilisateur.ID_UTILISATEUR=$id_eleve
+            AND NOW()>HEUR_DEBUT
+            AND NOW()<HEUR_FIN";
 
-            /*while ($row=mysqli_fetch_assoc($result))
+            $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
+            
+
+            while ($row=mysqli_fetch_assoc($result))
             {
 
-                if()
                     echo"<tr>
-                    <td>{$row['NOM']}</td>
-                    <td>{$row['PRENOM']}</td>
-                    <td>{$row['EMAIL']}</td>
+                    <td>".$row['NOM']."</td>
+                    <td>".$row['PRENOM']."</td>
+                    <td>".$row['EMAIL']."</td>
                     <td><button class=\"favorite styled\" type=\"button\">Présent</button></td>
                     </tr>\n";
-            }*/
+            }
                     
         ?>
         </table>

@@ -43,7 +43,7 @@
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $id_utilisateur=$_SESSION['ID_UTILISATEUR'];
 
-            $sql="SELECT NOM,PRENOM,email
+            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR
             FROM calandrier
             INNER JOIN eleve ON calandrier.ID_GROUPE = eleve.ID_GROUPE
             INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR

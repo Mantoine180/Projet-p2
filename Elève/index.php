@@ -37,7 +37,7 @@
  <section class="banniere">
     <div>Etudiant</div>
         <table border='1'>
-        <tr><td>Horaire</td><td>Cours</td><td>Validation</td></tr>
+        <tr><td></td><td>Cours</td><td>Validation</td></tr>
         <?php
                 
             //Connexion bdd
@@ -73,9 +73,4 @@
 
 <script src="app.js"></script>
 	<footer>
-        <div class="reseau">Confirmation du formulaire
-        <button class="favorite styled" type="button">
-            Valider le formulaire
-        </button>
-    </div>
     </footer>

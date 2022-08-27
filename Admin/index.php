@@ -42,27 +42,37 @@
             //Connexion bdd
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $db = new mysqli("localhost","root","","web p2") or die("Erreur");
-            $sql="SELECT HEUR_DEBUT,HEUR_FIN,ID_UTILISATEUR
-            FROM CALANDRIER
+            $sql="SELECT HEUR_DEBUT,HEUR_FIN,ID_UTILISATEUR,calandrier.ID_CALANDRIER
+            FROM calandrier
             INNER JOIN signature ON calandrier.ID_CALANDRIER = signature.ID_CALANDRIER
             AND ID_ROLE=2
             ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC";
-            
-          
            
             $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
-            
+
             while ($row=mysqli_fetch_assoc($result))
             {
-                    echo"<form method=\"POST\">
-                    <tr>
-                    <td>{$row['HEUR_DEBUT']}</td>
-                    <td>{$row['HEUR_FIN']}</td>
-                    <td>{$row['ID_UTILISATEUR']}</td>
-                    <td><input class=\"favorite styled\" type=\"submit\" name=\"boutonP{$row['ID_UTILISATEUR']}\" value=\"Document PDF\"></td>
-                    </tr>\n
-                    </form>";
+                $cal = $row['ID_CALANDRIER'];
+                $sql2="SELECT *
+                        FROM document
+                        WHERE ID_CALANDRIER =1";
+                        $result2= mysqli_query($link,$sql2)or die('Erreur: '.mysqli_error($link));
+                        while ($row2=mysqli_fetch_assoc($result2))
+                        {
+                            $doc = $row2['ID_DOCUMENT'];
+                        }
+                echo"<form method=\"POST\" action=\"../GeneratePDF.php?document=$doc\">
+                <tr>
+                <td>{$row['HEUR_DEBUT']}</td>
+                <td>{$row['HEUR_FIN']}</td>
+                <td>{$row['ID_UTILISATEUR']}</td>
+                <td><input class=\"favorite styled\" type=\"submit\" name=\"bouton\" value=\"Document PDF\"></td>
+                </tr>\n
+                </form>";
             }
+
+
+
                     
         ?>
         </table>

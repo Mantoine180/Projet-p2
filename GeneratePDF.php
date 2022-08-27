@@ -35,13 +35,14 @@ function Footer()
 // Chargement des données
 function LoadData()
 {
+    $id_doc = $_GET['document'];
     $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
 	$db = new mysqli("localhost","root","","web p2") or die("Erreur");
 	$sql="SELECT *
 	FROM utilisateur,signature
 	WHERE utilisateur.ID_UTILISATEUR = signature.ID_UTILISATEUR
 	AND utilisateur.ID_ROLE = 1
-	AND signature.ID_DOCUMENT = 1";
+	AND signature.ID_DOCUMENT = $id_doc";
 	$result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
 
     $data = array();

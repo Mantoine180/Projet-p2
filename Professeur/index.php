@@ -43,7 +43,7 @@
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $id_utilisateur=$_SESSION['ID_UTILISATEUR'];
 
-            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR
+            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR,ID_CALANDRIER
             FROM calandrier
             INNER JOIN eleve ON calandrier.ID_GROUPE = eleve.ID_GROUPE
             INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR
@@ -52,6 +52,7 @@
             AND NOW()<HEUR_FIN";
            
             $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
+            $crea_doc = false;
             
             while ($row=mysqli_fetch_assoc($result))
             {
@@ -68,19 +69,40 @@
                      if (isset($_POST['boutonA'.$row['ID_UTILISATEUR']])) 
                     {       
                         mysqli_query($link,'UPDATE `signature` SET `VALID` = 0 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
                     }
                     if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
                     {       
                         mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
+                    }
+                    if (isset($_POST['boutonVForm'])) 
+                    { 
+                        $crea_doc = true;
+                        $cal = $row['ID_CALANDRIER'];
                     }
                 }
             }
-            
+            if ($crea_doc) { 
+                        mysqli_query($link,'INSERT INTO `document` (`ID_DOCUMENT`, `VALID`,`ID_CALANDRIER`) VALUES (NULL, NULL,'.$cal.')');   
+                        $sql2="SELECT *
+                        FROM document
+                        WHERE ID_CALANDRIER =$cal";
+                        $result2= mysqli_query($link,$sql2)or die('Erreur: '.mysqli_error($link));
+                        while ($row=mysqli_fetch_assoc($result2))
+                        {
+                            $doc = $row['ID_DOCUMENT'];
+                        }
+                        $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
+                        while ($row=mysqli_fetch_assoc($result))
+                        {
+                            mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                            echo "1";
+                        }
+                    }
+
                     
         ?>
         </table>
+
  </section>
 
 </div>
@@ -88,8 +110,9 @@
 <script src="app.js"></script>
 	<footer>
         <div class="reseau">Confirmation du formulaire
-        <button class="favorite styled" type="button">
-            Valider le formulaire
-        </button>
-    </div>
+            <form method="post" >
+                <input class="favorite styled" type="submit" name="boutonVForm" value="Valider le formulaire">
+            </form>
+        </div>
+
     </footer>

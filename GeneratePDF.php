@@ -7,14 +7,16 @@ class PDF extends FPDF
 // En-tête
 function Header()
 {
-    // Logo
-    $this->Image('logo.png',10,6,30);
+    // Logo 1
+    $this->Image('logo1.png',10,4,40);
+    // Logo 2
+    $this->Image('logo2.png',165,12,30);
     // Police Arial gras 15
     $this->SetFont('Arial','B',15);
     // Décalage à droite
-    $this->Cell(80);
+    $this->Cell(60);
     // Titre
-    $this->Cell(70,10,'Feuilles emargement',1,0,'C');
+    $this->Cell(70,20,'Feuilles emargement 2022/2023',0,0,'C');
     // Saut de ligne
     $this->Ln(20);
 }
@@ -60,7 +62,7 @@ function FancyTable($header, $data)
     $this->SetLineWidth(.3);
     $this->SetFont('','B');
     // En-tête
-    $w = array(40, 35, 45);
+    $w = array(65, 65, 55);
     for($i=0;$i<count($header);$i++)
         $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
     $this->Ln();

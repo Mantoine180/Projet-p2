@@ -97,6 +97,10 @@
                             mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
 
                         }
+                        $sign_prof="INSERT INTO `signature`
+                        (ID_ROLE,ID_DOCUMENT,VALID,ID_UTLISATEUR,ID_CALANDRIER) 
+                        VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
+                        mysqli_query($link,$sign_prof);
                     }
 
                     

@@ -98,9 +98,11 @@
 
                         }
                         $sign_prof="INSERT INTO `signature`
-                        (ID_ROLE,ID_DOCUMENT,VALID,ID_UTLISATEUR,ID_CALANDRIER) 
+                        (`ID_ROLE`,`ID_DOCUMENT`,`VALID`,`ID_UTILISATEUR`,`ID_CALANDRIER`) 
                         VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
                         mysqli_query($link,$sign_prof);
+                        mysqli_query($link,'DELETE FROM `signature` WHERE signature.ID_CALANDRIER = '.$cal.' AND signature.ID_DOCUMENT != '.$doc.' AND signature.ID_ROLE = 2');
+                        mysqli_query($link,'DELETE FROM `document` WHERE document.ID_CALANDRIER = '.$cal.' AND document.ID_DOCUMENT != '.$doc.'');
                     }
 
                     

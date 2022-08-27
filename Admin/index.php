@@ -36,21 +36,19 @@
  <section class="banniere">
     <div>Etudiant</div>
         <table border='1'>
-        <tr><td>Nom</td><td>Prenom</td><td>Email</td></tr>
+        <tr><td>Heure de début</td><td>Heure de fin</td><td>ID Professeur</td><td>Document PDF</td></tr>
         <?php
                 
             //Connexion bdd
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $db = new mysqli("localhost","root","","web p2") or die("Erreur");
-            $sql="SELECT utilisateur.ID_UTILISATEUR,NOM,PRENOM,EMAIL,MotDePasse,utilisateur.ID_ROLE 
-            FROM utilisateur,role,calandrier,classe,groupe,eleve
-            WHERE utilisateur.ID_UTILISATEUR=eleve.ID_UTILISATEUR 
-            AND eleve.ID_GROUPE=groupe.ID_GROUPE 
-            AND eleve.ID_CLASSE=classe.ID_CLASSE 
-            AND groupe.ID_GROUPE=calandrier.ID_GROUPE
-            AND classe.ID_CLASSE=calandrier.ID_CLASSE
+            $sql="SELECT HEUR_DEBUT,HEUR_FIN,ID_UTILISATEUR
+            FROM CALANDRIER
+            INNER JOIN signature ON calandrier.ID_CALANDRIER = signature.ID_CALANDRIER
+            AND ID_ROLE=2
+            ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC";
             
-            GROUP BY ID_Utilisateur";
+          
            
             $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
             
@@ -58,27 +56,13 @@
             {
                     echo"<form method=\"POST\">
                     <tr>
-                    <td>{$row['NOM']}</td>
-                    <td>{$row['PRENOM']}</td>
-                    <td>{$row['EMAIL']}</td>
-                    <td><input class=\"favorite styled\" type=\"submit\" name=\"boutonP{$row['ID_UTILISATEUR']}\" value=\"Présent\">
-                    <input class=\"favorite styled\" type=\"submit\" name=\"boutonA{$row['ID_UTILISATEUR']}\" value=\"Absent\"></td>
+                    <td>{$row['HEUR_DEBUT']}</td>
+                    <td>{$row['HEUR_FIN']}</td>
+                    <td>{$row['ID_UTILISATEUR']}</td>
+                    <td><input class=\"favorite styled\" type=\"submit\" name=\"boutonP{$row['ID_UTILISATEUR']}\" value=\"Document PDF\"></td>
                     </tr>\n
                     </form>";
-                    if ($_POST) { 
-                     if (isset($_POST['boutonA'.$row['ID_UTILISATEUR']])) 
-                    {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 0 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
-                    }
-                    if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
-                    {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
-                    }
-                }
             }
-            
                     
         ?>
         </table>

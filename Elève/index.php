@@ -37,14 +37,14 @@
  <section class="banniere">
     <div>Etudiant</div>
         <table border='1'>
-        <tr><td></td><td>Cours</td><td>Validation</td></tr>
+        <tr><td>Nom</td><td>Prénom</td><td>Email</td><td>Validation</td></tr>
         <?php
                 
             //Connexion bdd
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $db = new mysqli("localhost","root","","web p2") or die("Erreur");
             $id_eleve=$_SESSION['ID_UTILISATEUR'];
-            $sql="SELECT NOM,PRENOM,EMAIL FROM utilisateur
+            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR FROM utilisateur
             INNER JOIN eleve ON utilisateur.ID_UTILISATEUR =eleve.ID_UTILISATEUR
             INNER JOIN calandrier ON eleve.ID_GROUPE= calandrier.ID_GROUPE
             AND utilisateur.ID_UTILISATEUR=$id_eleve
@@ -52,10 +52,7 @@
             AND NOW()<HEUR_FIN";
 
             $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
-            
-
-            while ($row=mysqli_fetch_assoc($result))
-            {
+            $row=mysqli_fetch_assoc($result);
 
                     echo"<tr>
                     <td>".$row['NOM']."</td>
@@ -63,14 +60,17 @@
                     <td>".$row['EMAIL']."</td>
                     <td><button class=\"favorite styled\" type=\"button\">Présent</button></td>
                     </tr>\n";
-            }
+
+                    if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
+                    {       
+                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                        echo "{$row['ID_UTILISATEUR']}";
+                    }
+            
                     
         ?>
         </table>
  </section>
 
 </div>
-
-<script src="app.js"></script>
-	<footer>
-    </footer>
+</footer>

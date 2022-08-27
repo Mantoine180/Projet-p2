@@ -46,7 +46,14 @@
             FROM calandrier
             INNER JOIN signature ON calandrier.ID_CALANDRIER = signature.ID_CALANDRIER
             AND ID_ROLE=2
+<<<<<<< HEAD
             ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC";
+=======
+            ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC
+            GROUP BY signature.ID_CALANDRIER";
+            
+          
+>>>>>>> 0c0833c55dcbd549696023476d1e172460d434b0
            
             $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
 

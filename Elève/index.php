@@ -44,27 +44,47 @@
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $db = new mysqli("localhost","root","","web p2") or die("Erreur");
             $id_eleve=$_SESSION['ID_UTILISATEUR'];
-            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR FROM utilisateur
+            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR,calandrier.ID_CALANDRIER FROM utilisateur
             INNER JOIN eleve ON utilisateur.ID_UTILISATEUR =eleve.ID_UTILISATEUR
             INNER JOIN calandrier ON eleve.ID_GROUPE= calandrier.ID_GROUPE
+            INNER JOIN  ON calandrier.ID_CALANDRIER=document.ID_DOCUMENT
             AND utilisateur.ID_UTILISATEUR=$id_eleve
             AND NOW()>HEUR_DEBUT
             AND NOW()<HEUR_FIN";
 
             $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
             $row=mysqli_fetch_assoc($result);
-
-                    echo"<tr>
+            $cal=$row['ID_CALANDRIER'];
+            $doc=$row['ID_DOCUMENT']
+                    echo"<form method=\"POST\">
+                    <tr>
                     <td>".$row['NOM']."</td>
                     <td>".$row['PRENOM']."</td>
                     <td>".$row['EMAIL']."</td>
-                    <td><button class=\"favorite styled\" type=\"button\">Présent</button></td>
-                    </tr>\n";
+                    <td><input class=\"favorite styled\" type=\"submit\" name=\"boutonP{$row['ID_UTILISATEUR']}\" value=\"Présent\">
+                    </tr>\n
+                    </form>";
 
                     if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
-                    {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                        echo "{$row['ID_UTILISATEUR']}";
+                    {   
+                        $verification="SELECT ID_ROLE,ID_DOCUMENT,VALID,ID_UTILISATEUR,ID_CALANDRIER
+                        FROM signature
+                        WHERE ID_ROLE=1
+                        AND ID_DOCUMENT=$doc
+                        AND VALID=1
+                        AND ID_UTILISATEUR=$id_utilisateur
+                        AND ID_CLANDRIER=$cal";
+                        $result=mysqli_query($link,$verification);
+                        
+                        if ($result==NULL)
+                        {
+                            $sign_eleve="INSERT INTO `signature`
+                            (ID_ROLE,ID_DOCUMENT,VALID,ID_UTILISATEUR,ID_CALANDRIER) 
+                            VALUES (1,'$doc',1,'$id_eleve','$cal')";
+                            mysqli_query($link,$id_eleve);
+                        }
+
+
                     }
             
                     

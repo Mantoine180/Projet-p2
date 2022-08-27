@@ -47,13 +47,15 @@
             FROM calandrier
             INNER JOIN eleve ON calandrier.ID_GROUPE = eleve.ID_GROUPE
             INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR
+            INNER JOIN signature ON calandrier.ID_CALANDRIER=signature.ID_CALANDRIER
             AND calandrier.ID_PROFESSEUR=$id_utilisateur
+            AND VALID=1
             AND NOW()>HEUR_DEBUT
             AND NOW()<HEUR_FIN";
            
             $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
             $crea_doc = false;
-            
+            $first=true;
             while ($row=mysqli_fetch_assoc($result))
             {
                     echo"<form method=\"POST\">
@@ -97,12 +99,21 @@
                             mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
 
                         }
+<<<<<<< HEAD
+                            $sign_prof="INSERT INTO `signature`
+                            (ID_ROLE,ID_DOCUMENT,VALID,ID_UTILISATEUR,ID_CALANDRIER) 
+                            VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
+                            mysqli_query($link,$sign_prof);
+
+
+=======
                         $sign_prof="INSERT INTO `signature`
                         (`ID_ROLE`,`ID_DOCUMENT`,`VALID`,`ID_UTILISATEUR`,`ID_CALANDRIER`) 
                         VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
                         mysqli_query($link,$sign_prof);
                         mysqli_query($link,'DELETE FROM `signature` WHERE signature.ID_CALANDRIER = '.$cal.' AND signature.ID_DOCUMENT != '.$doc.' AND signature.ID_ROLE = 2');
                         mysqli_query($link,'DELETE FROM `document` WHERE document.ID_CALANDRIER = '.$cal.' AND document.ID_DOCUMENT != '.$doc.'');
+>>>>>>> 1c337f4a71dbd5f9e7f47ef6a0483b69a0c2d20b
                     }
 
                     

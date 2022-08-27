@@ -95,7 +95,7 @@
                         while ($row=mysqli_fetch_assoc($result))
                         {
                             mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
-                            echo "1";
+
                         }
                     }
 

@@ -42,7 +42,6 @@
             INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR
             INNER JOIN signature ON utilisateur.ID_UTILISATEUR = signature.ID_UTILISATEUR
             AND calandrier.ID_PROFESSEUR=$id_utilisateur
-            AND VALID=1
             AND NOW()>HEUR_DEBUT
             AND NOW()<HEUR_FIN";
            
@@ -92,12 +91,21 @@
                             mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
 
                         }
-                        $sign_prof="INSERT INTO `signature`
-                        (`ID_ROLE`,`ID_DOCUMENT`,`VALID`,`ID_UTILISATEUR`,`ID_CALANDRIER`) 
-                        VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
-                        mysqli_query($link,$sign_prof);
-                        mysqli_query($link,'DELETE FROM `signature` WHERE signature.ID_CALANDRIER = '.$cal.' AND signature.ID_DOCUMENT != '.$doc.' AND signature.ID_ROLE = 2');
-                        mysqli_query($link,'DELETE FROM `document` WHERE document.ID_CALANDRIER = '.$cal.' AND document.ID_DOCUMENT != '.$doc.'');
+
+                        $verification="SELECT ID_ROLE,VALID,ID_UTILISATEUR,ID_CALANDRIER
+                        FROM signature
+                        WHERE ID_ROLE=2
+                        AND VALID=1
+                        AND ID_UTILISATEUR=$id_utilisateur
+                        AND ID_CALANDRIER=$cal";
+
+                        if (mysqli_num_rows(mysqli_query($link,$verification))==0)
+                        {
+                            $sign_prof="INSERT INTO `signature`
+                            (`ID_ROLE`,`ID_DOCUMENT`,`VALID`,`ID_UTILISATEUR`,`ID_CALANDRIER`) 
+                            VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
+                            mysqli_query($link,$sign_prof);
+                        }
                     }
 
                     

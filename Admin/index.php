@@ -46,8 +46,7 @@
             FROM calandrier
             INNER JOIN signature ON calandrier.ID_CALANDRIER = signature.ID_CALANDRIER
             AND ID_ROLE=2
-            ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC
-            GROUP BY signature.ID_CALANDRIER";
+            ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC";
             
           
            

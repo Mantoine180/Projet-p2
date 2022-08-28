@@ -63,15 +63,14 @@
                         $verification="SELECT ID_ROLE,VALID,ID_UTILISATEUR,ID_CALANDRIER
                         FROM signature
                         WHERE ID_ROLE=1
-                        AND VALID=1
-                        AND ID_UTILISATEUR=$id_eleve
+                        AND ID_UTILISATEUR=1
                         AND ID_CALANDRIER=$cal";
                         
                         if (mysqli_num_rows(mysqli_query($link,$verification))==0)
                         {
                             $sign_eleve="INSERT INTO `signature`
                             (ID_ROLE,VALID,ID_UTILISATEUR,ID_CALANDRIER) 
-                            VALUES (1,1,'$id_eleve','$cal')";
+                            VALUES (1,NULL,'$id_eleve','$cal')";
                             mysqli_query($link,$sign_eleve);
                         }
 

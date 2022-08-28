@@ -17,9 +17,16 @@
     <nav>
         <ul>
          <li><a href="../index.html"> <a class="logo">Projet P2 </a></li>   
+        <li>
+            <div class="produits">
+                <a href="/identification/index.html">Identifiez vous<i class="fas fa-user-plus"></i></a>
+            </div>
+        </li>
+
+
         <li> 
             <div class="services">
-                <a href="../index.php">Connectez vous<i class="fas fa-sign-in-alt"></i></a>
+                <a href="/identification/index.html">Connectez vous<i class="fas fa-sign-in-alt"></i></a>
             </div>
            </div>
        </li>  
@@ -36,18 +43,17 @@
             $link = mysqli_connect("localhost","root","","web p2") or die("Erreur");
             $id_utilisateur=$_SESSION['ID_UTILISATEUR'];
 
-            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR,calandrier.ID_CALANDRIER
+            $sql="SELECT NOM,PRENOM,EMAIL,utilisateur.ID_UTILISATEUR,ID_CALANDRIER
             FROM calandrier
             INNER JOIN eleve ON calandrier.ID_GROUPE = eleve.ID_GROUPE
             INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR
-            INNER JOIN signature ON utilisateur.ID_UTILISATEUR = signature.ID_UTILISATEUR
             AND calandrier.ID_PROFESSEUR=$id_utilisateur
             AND NOW()>HEUR_DEBUT
             AND NOW()<HEUR_FIN";
            
             $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
             $crea_doc = false;
-            $first=true;
+            
             while ($row=mysqli_fetch_assoc($result))
             {
                     echo"<form method=\"POST\">
@@ -62,11 +68,11 @@
                     if ($_POST) { 
                      if (isset($_POST['boutonA'.$row['ID_UTILISATEUR']])) 
                     {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 0 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 0 WHERE `signature`.`ID_UTILISATEUR` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
                     }
                     if (isset($_POST['boutonP'.$row['ID_UTILISATEUR']])) 
                     {       
-                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                        mysqli_query($link,'UPDATE `signature` SET `VALID` = 1 WHERE `signature`.`ID_UTILISATEUR` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
                     }
                     if (isset($_POST['boutonVForm'])) 
                     { 
@@ -88,24 +94,15 @@
                         $result= mysqli_query($link,$sql)or die('Erreur: '.mysqli_error($link));
                         while ($row=mysqli_fetch_assoc($result))
                         {
-                            mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_SIGNATURE` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
+                            mysqli_query($link,'UPDATE `signature` SET `ID_DOCUMENT` = '.$doc.' WHERE `signature`.`ID_UTILISATEUR` = '.$row['ID_UTILISATEUR'].'')or die('Erreur: '.mysqli_error());
 
                         }
-
-                        $verification="SELECT ID_ROLE,VALID,ID_UTILISATEUR,ID_CALANDRIER
-                        FROM signature
-                        WHERE ID_ROLE=2
-                        AND VALID=1
-                        AND ID_UTILISATEUR=$id_utilisateur
-                        AND ID_CALANDRIER=$cal";
-
-                        if (mysqli_num_rows(mysqli_query($link,$verification))==0)
-                        {
-                            $sign_prof="INSERT INTO `signature`
-                            (`ID_ROLE`,`ID_DOCUMENT`,`VALID`,`ID_UTILISATEUR`,`ID_CALANDRIER`) 
-                            VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
-                            mysqli_query($link,$sign_prof);
-                        }
+                        $sign_prof="INSERT INTO `signature`
+                        (`ID_ROLE`,`ID_DOCUMENT`,`VALID`,`ID_UTILISATEUR`,`ID_CALANDRIER`) 
+                        VALUES (2,'$doc',1,'$id_utilisateur','$cal')";
+                        mysqli_query($link,$sign_prof);
+                        mysqli_query($link,'DELETE FROM `signature` WHERE signature.ID_CALANDRIER = '.$cal.' AND signature.ID_DOCUMENT != '.$doc.' AND signature.ID_ROLE = 2');
+                        mysqli_query($link,'DELETE FROM `document` WHERE document.ID_CALANDRIER = '.$cal.' AND document.ID_DOCUMENT != '.$doc.'');
                     }
 
                     

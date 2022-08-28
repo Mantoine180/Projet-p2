@@ -48,7 +48,7 @@
             INNER JOIN eleve ON calandrier.ID_GROUPE = eleve.ID_GROUPE
             INNER JOIN utilisateur ON eleve.ID_UTILISATEUR = utilisateur.ID_UTILISATEUR
             INNER JOIN signature ON utilisateur.ID_UTILISATEUR = signature.ID_UTILISATEUR
-            AND calandrier.ID_PROFESSEUR=10
+            AND calandrier.ID_PROFESSEUR=$id_utilisateur
             AND VALID=1
             AND NOW()>HEUR_DEBUT
             AND NOW()<HEUR_FIN";

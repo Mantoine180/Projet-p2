@@ -18,14 +18,14 @@
          <li><a href="../index.html"> <a class="logo">Projet P2 </a></li>   
         <li>
             <div class="produits">
-                <a href="/identification/index.html">Identifiez vous<i class="fas fa-user-plus"></i></a>
+                <a href="../identification/index.php">Identifiez vous<i class="fas fa-user-plus"></i></a>
             </div>
         </li>
 
 
         <li> 
             <div class="services">
-                <a href="/identification/index.html">Connectez vous<i class="fas fa-sign-in-alt"></i></a>
+                <a href="../index.php">Connectez vous<i class="fas fa-sign-in-alt"></i></a>
             </div>
            </div>
        </li>  
@@ -46,14 +46,10 @@
             FROM calandrier
             INNER JOIN signature ON calandrier.ID_CALANDRIER = signature.ID_CALANDRIER
             AND ID_ROLE=2
-<<<<<<< HEAD
-            ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC";
-=======
             ORDER BY HEUR_FIN DESC, HEUR_DEBUT DESC,ID_PROFESSEUR ASC
             GROUP BY signature.ID_CALANDRIER";
             
           
->>>>>>> 0c0833c55dcbd549696023476d1e172460d434b0
            
             $result= mysqli_query($db,$sql)or die('Erreur: '.mysqli_error());
 

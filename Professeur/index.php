@@ -17,16 +17,9 @@
     <nav>
         <ul>
          <li><a href="../index.html"> <a class="logo">Projet P2 </a></li>   
-        <li>
-            <div class="produits">
-                <a href="/identification/index.html">Identifiez vous<i class="fas fa-user-plus"></i></a>
-            </div>
-        </li>
-
-
         <li> 
             <div class="services">
-                <a href="/identification/index.html">Connectez vous<i class="fas fa-sign-in-alt"></i></a>
+                <a href="../index.php">Connectez vous<i class="fas fa-sign-in-alt"></i></a>
             </div>
            </div>
        </li>  

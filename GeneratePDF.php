@@ -16,7 +16,7 @@ function Header()
     // Décalage à droite
     $this->Cell(60);
     // Titre
-    $this->Cell(70,20,'Feuilles emargement 2022/2023',0,0,'C');
+    $this->Cell(70,20,utf8_decode('Feuilles d\'émargement 2022/2023'),0,0,'C');
     // Saut de ligne
     $this->Ln(20);
 }
@@ -75,8 +75,8 @@ function FancyTable($header, $data)
     $fill = false;
     foreach($data as $row)
     {
-        $this->Cell($w[0],6,$row[0],'LR',0,'L',$fill);
-        $this->Cell($w[1],6,$row[1],'LR',0,'L',$fill);
+        $this->Cell($w[0],6,utf8_decode($row[0]),'LR',0,'L',$fill);
+        $this->Cell($w[1],6,utf8_decode($row[1]),'LR',0,'L',$fill);
         $this->Cell($w[2],6,number_format($row[2],0,',',' '),'LR',0,'R',$fill);
         $this->Ln();
         $fill = !$fill;
